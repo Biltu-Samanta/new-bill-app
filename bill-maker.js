@@ -52,7 +52,7 @@ function addItemRow(tb, focus = true) {
     tr.innerHTML =
         '<td class="num" tabindex="-1"><span class="n"></span>' +
         '<button class="row-del no-export" type="button" tabindex="-1" title="Remove item">×</button></td>' +
-        '<td><input class="fld name" type="text" list="fruitList" autocomplete="off"></td>' +
+        '<td><input class="fld name" type="text" autocomplete="off"></td>' +
         '<td><input class="fld qty" type="text"></td>' +
         '<td><input class="fld price" type="text" inputmode="decimal"></td>';
 
@@ -317,3 +317,65 @@ function saveBlob(blob, name) {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+
+// ---------- Fruit name suggestions: all shown at once, in Bengali alphabetical order ----------
+(function setupFruitPanel() {
+    const FRUITS = [
+        'আম', 'আপেল', 'লাল আঙুর', 'আঙুর', 'আনারস', 'কমলা', 'লিচু', 'কলা', 'পানিফল', 'খেজুর',
+        'জাম', 'তরমুজ', 'পেঁপে', 'পেয়ারা', 'নারকেল', 'নাশপাতি', 'বেদানা', 'বাতাবি', 'মালটা',
+        'মৌসুম্বি', 'শসা', 'সবেদা', 'আলুবোখারা', 'চেরি', 'তাল', 'কিসমিস', 'বাদাম', 'কাজু'
+    ].sort(new Intl.Collator('bn').compare);
+
+    const panel = document.createElement('div');
+    panel.id = 'fruitPanel';
+    panel.className = 'fruit-panel no-export';
+    panel.hidden = true;
+    FRUITS.forEach(name => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.tabIndex = -1;
+        b.className = 'fruit-opt';
+        b.textContent = name;
+        // mousedown (not click) with preventDefault keeps focus in the name cell
+        b.addEventListener('mousedown', e => {
+            e.preventDefault();
+            if (!activeNameInput) return;
+            activeNameInput.value = name;
+            activeNameInput.dispatchEvent(new Event('input', { bubbles: true }));
+            hidePanel();
+        });
+        panel.appendChild(b);
+    });
+    document.body.appendChild(panel);
+
+    let activeNameInput = null;
+
+    function showPanel(input) {
+        activeNameInput = input;
+        const r = input.getBoundingClientRect();
+        panel.style.left = Math.max(8, r.left) + 'px';
+        panel.style.top = (r.bottom + 4) + 'px';
+        panel.style.minWidth = Math.max(r.width, 300) + 'px';
+        panel.hidden = false;
+    }
+
+    function hidePanel() {
+        panel.hidden = true;
+        activeNameInput = null;
+    }
+
+    document.addEventListener('focusin', e => {
+        if (e.target.matches && e.target.matches('#bill input.name')) showPanel(e.target);
+    });
+    document.addEventListener('focusout', e => {
+        if (e.target === activeNameInput) hidePanel();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') hidePanel();
+    });
+    window.addEventListener('scroll', () => {
+        if (activeNameInput) showPanel(activeNameInput);
+    }, true);
+    window.addEventListener('resize', hidePanel);
+})();
