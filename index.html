@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ashok Fruit Shop - Bill Maker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="bill-maker.css">
+</head>
+
+<body>
+
+    <!-- Fruit suggestions for the ফলের নাম column; the user can also type any custom name -->
+    <datalist id="fruitList">
+        <option value="আম">
+        <option value="আপেল">
+        <option value="লাল আঙুর">
+        <option value="আঙুর">
+        <option value="আনারস">
+        <option value="কমলা">
+        <option value="লিচু">
+        <option value="কলা">
+        <option value="পানিফল">
+        <option value="খেজুর">
+        <option value="জাম">
+        <option value="তরমুজ">
+        <option value="পেঁপে">
+        <option value="পেয়ারা">
+        <option value="নারকেল">
+        <option value="নাশপাতি">
+        <option value="বেদানা">
+        <option value="বাতাবি">
+        <option value="মালটা">
+        <option value="মৌসুম্বি">
+        <option value="শসা">
+        <option value="সবেদা">
+        <option value="আলুবোখারা">
+        <option value="চেরি">
+    </datalist>
+
+    <div class="toolbar no-export">
+        <div class="brand">
+            <div class="logo">A</div>
+            <span class="brand-text">Ashok Fruit Shop</span>
+        </div>
+        <button id="downloadBtn" type="button">Download PDF + JPG</button>
+    </div>
+
+    <div class="page" id="page">
+        <div class="top-strip"></div>
+        <div class="page-inner">
+            <div class="head">
+                <div>
+                    <div class="title" contenteditable="true" spellcheck="false">ASHOK FRUIT SHOP</div>
+                    <div class="tagline" contenteditable="true" spellcheck="false">ভারত সেবা সংঘ</div>
+                </div>
+</div>
+
+            <table id="bill">
+                <colgroup>
+                    <col style="width:16%">
+                    <col style="width:8%">
+                    <col style="width:30%">
+                    <col style="width:22%">
+                    <col style="width:24%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>তারিখ<button class="plus no-export" id="addDate" type="button" title="Add date">+</button></th>
+                        <th>নং<button class="plus no-export" id="addItem" type="button" title="Add item">+</button></th>
+                        <th>ফলের নাম</th>
+                        <th>পরিমাণ</th>
+                        <th>মূল্য</th>
+                    </tr>
+                </thead>
+                <tbody id="grandBody" class="grand">
+                    <tr>
+                        <td colspan="4" class="tot">Grand Total</td>
+                        <td class="tot-val grand-val" id="grandTotal">0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="foot">
+                <div></div>
+                <div class="sig">
+                    <div class="sig-box"><div class="sig-label">Signature</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-strip"></div>
+    </div>
+    <script src="bill-maker.js"></script>
+</body>
+
+</html>
